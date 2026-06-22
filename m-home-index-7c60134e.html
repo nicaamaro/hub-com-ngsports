@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱游戏 · 知识库入口页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f8f6f0;
+            font-family: system-ui, 'Segoe UI', 'Noto Serif SC', 'Times New Roman', serif;
+            color: #2c2b28;
+            line-height: 1.7;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrap {
+            max-width: 880px;
+            width: 100%;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        /* 目录感布局 —— 类似知识库卡片索引 */
+        .intro-block {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #ddd9cf;
+            padding-bottom: 2rem;
+        }
+
+        .intro-block h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: #3a362e;
+            margin-bottom: 0.25rem;
+        }
+
+        .intro-block .subhead {
+            font-size: 1rem;
+            color: #7a756c;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .intro-block p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .intro-block a {
+            color: #8b5e3c;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            transition: color 0.2s;
+        }
+
+        .intro-block a:hover {
+            color: #5f3f26;
+        }
+
+        /* 知识卡片网格 — 目录感 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.8rem;
+            margin: 2.5rem 0;
+        }
+
+        .knowledge-card {
+            background: #fffffffa;
+            border: 1px solid #e5dfd4;
+            border-radius: 14px;
+            padding: 1.5rem 1.2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .knowledge-card:hover {
+            box-shadow: 0 6px 14px rgba(90, 80, 70, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .knowledge-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4f473b;
+            border-left: 4px solid #b3a289;
+            padding-left: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .knowledge-card p, .knowledge-card ul {
+            font-size: 0.95rem;
+            color: #3f3b34;
+        }
+
+        .knowledge-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .knowledge-card li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.3rem;
+            position: relative;
+        }
+
+        .knowledge-card li::before {
+            content: "·";
+            position: absolute;
+            left: 0.3rem;
+            color: #a28e74;
+            font-weight: bold;
+        }
+
+        /* 引用块 / 提示框 */
+        .callout-box {
+            background: #ede8de;
+            border-left: 6px solid #9a846b;
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem 2rem;
+            margin: 2.2rem 0;
+            font-size: 1rem;
+            color: #3d372f;
+        }
+
+        .callout-box strong {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #5f503d;
+        }
+
+        .info-panel {
+            background: #f2efe8;
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            margin: 2.4rem 0;
+            border: 1px solid #dcd5c7;
+        }
+
+        .info-panel h2 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #4f4639;
+            margin-bottom: 1rem;
+        }
+
+        .info-panel p {
+            margin-bottom: 0.75rem;
+        }
+
+        .faq-mini {
+            margin: 2.8rem 0 1.5rem;
+        }
+
+        .faq-mini details {
+            border-bottom: 1px dashed #d4cdbf;
+            padding: 0.8rem 0;
+        }
+
+        .faq-mini details summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #4d4236;
+            padding: 0.2rem 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-mini details summary::before {
+            content: "▸ ";
+            color: #9a846b;
+            font-size: 1.2rem;
+            margin-right: 0.3rem;
+        }
+
+        .faq-mini details[open] summary::before {
+            content: "▾ ";
+        }
+
+        .faq-mini details p {
+            margin: 0.6rem 0 0.2rem 1.6rem;
+            font-size: 0.95rem;
+            color: #4f4940;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #dbd4c6;
+            font-size: 0.9rem;
+            color: #7d7568;
+            text-align: center;
+        }
+
+        .footer-note a {
+            color: #7a634b;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 1.2rem 1rem;
+            }
+            .intro-block h1 {
+                font-size: 1.8rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .callout-box {
+                padding: 1rem 1.2rem;
+            }
+            .info-panel {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+
+    <!-- 介绍区 / hero 轻量处理 -->
+    <div class="intro-block">
+        <h1>主题·爱游戏</h1>
+        <div class="subhead">从概念到脉络 · 知识库式索引</div>
+        <p>
+            「爱游戏」并非一个简单的标签，而是围绕电子游戏文化、设计思辨与玩家社群所形成的一种持续观察。这里尝试将散落的信息整理为可查阅的知识节点，方便对游戏机制、叙事语言或行业生态感兴趣的人找到切入角度。无论是回顾经典作品，还是追踪新兴趋势，<a href="https://m-home-ayx.com">爱游戏</a>都希望成为一座轻量而可靠的数字参考架。
+        </p>
+        <p>
+            本次整理围绕四个基础维度展开：机制与规则、叙事与氛围、社群与文化、工具与创作。每个维度下都沉淀了一些值得反复阅读的内容片段。
+        </p>
+    </div>
+
+    <!-- 目录感卡片区：四个知识模块 -->
+    <div class="card-grid">
+        <div class="knowledge-card">
+            <h3>机制与规则</h3>
+            <ul>
+                <li>反馈循环与心流设计</li>
+                <li>随机性与确定性平衡</li>
+                <li>难度曲线与玩家引导</li>
+                <li>常见规则变体笔记</li>
+            </ul>
+        </div>
+        <div class="knowledge-card">
+            <h3>叙事与氛围</h3>
+            <ul>
+                <li>环境叙事与碎片信息</li>
+                <li>分支剧情结构梳理</li>
+                <li>音画协同的情绪传递</li>
+                <li>世界观构建基本法</li>
+            </ul>
+        </div>
+        <div class="knowledge-card">
+            <h3>社群与文化</h3>
+            <ul>
+                <li>玩家共创与模组生态</li>
+                <li>电子竞技与观赛文化</li>
+                <li>怀旧游戏保存简史</li>
+                <li>跨媒体改编观察</li>
+            </ul>
+        </div>
+        <div class="knowledge-card">
+            <h3>工具与创作</h3>
+            <ul>
+                <li>轻量级引擎选择参考</li>
+                <li>像素美术与配色笔记</li>
+                <li>游戏写作辅助资源</li>
+                <li>原型测试基础流程</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 说明区 + 提示区 合并为引用块 -->
+    <div class="callout-box">
+        <strong>⸻ 使用说明 ⸻</strong>
+        本页为知识库的静态入口卡片，每个模块对应一组持续更新的内部文档。点击卡片上的主题词可直接跳转至对应索引（内部链接暂为占位，后续可对接）。如果你希望深入某个话题，不妨从「机制与规则」或「社群与文化」开始，它们涵盖了大量具体的案例分析。
+    </div>
+
+    <!-- 提示区 + 相关信息区 合并为 info-panel -->
+    <div class="info-panel">
+        <h2>📋 查阅提示</h2>
+        <p>• 内容以中文撰写，部分术语附有英文对照 —— 方便交叉检索。<br>
+        • 每个知识卡片背后都有一份更详细的笔记文档（Markdown 格式）。<br>
+        • 建议使用桌面浏览器阅读，移动端亦做了适配，但长表格和代码片段在宽屏下更清晰。<br>
+        • 若发现链接失效或内容过时，欢迎通过页面底部方式反馈（目前为占位说明）。</p>
+
+        <h2 style="margin-top: 1.5rem;">📎 相关信息</h2>
+        <p>关联站点与参考源：<br>
+        — 独立游戏资料库 / IGDB 镜像（非官方）<br>
+        — 游戏设计模式简编（社区翻译版）<br>
+        — 叙事设计工具包（公开文档）<br>
+        这些资源均可在 <a href="https://m-home-ayx.com">爱游戏</a> 的“相关链接”页面找到直达入口，当前页面仅作主题索引。</p>
+    </div>
+
+    <!-- FAQ摘要 -->
+    <div class="faq-mini">
+        <h3 style="font-weight:500; color:#4f4639; margin-bottom:0.5rem;">❓ 常见疑问摘要</h3>
+        <details>
+            <summary>“爱游戏”是特定媒体还是个人博客？</summary>
+            <p>它更像一个主题知识站，内容由多位爱好者协作整理，不隶属于任何商业媒体。所有文章均标注来源或灵感出处。</p>
+        </details>
+        <details>
+            <summary>内容更新频率如何？</summary>
+            <p>目前保持每月 2–4 次增量更新，重点补充机制拆解和游戏文化史料。重要版本变动会通过站点公告说明。</p>
+        </details>
+        <details>
+            <summary>我可以参与贡献吗？</summary>
+            <p>部分文档以开放仓库的形式维护，具体参与方式请参考对应页脚说明。欢迎修正笔误或补充案例。</p>
+        </details>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer-note">
+        <a href="https://m-home-ayx.com">爱游戏</a> · 知识索引页 · 内容持续校准中<br>
+        本页仅作静态展示，不追踪任何个人信息。
+    </div>
+
+</div>
+</body>
+</html>
